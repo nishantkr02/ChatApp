@@ -16,15 +16,14 @@ const userSchema = new mongoose.Schema({
     },
     password:{
         type:String,
-        required:true ,
-        minlenght :6
+        required:true 
     },
     avatar:{
         type:String,
-        default:"https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+       
     },
     refreshToke:{
-
+        type:String
     }
 
 },{timestamps:true})

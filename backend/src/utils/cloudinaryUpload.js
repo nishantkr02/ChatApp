@@ -29,6 +29,7 @@ import fs from 'fs'
 
            //Now file has been uploaded 
            console.log("File has been uploaded successfully..!!",uploadResponse.url)
+           fs.unlink(localFilePath) 
            return uploadResponse ;
 
         } catch (error) {
