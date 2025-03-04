@@ -62,4 +62,75 @@ res.status(201).json(new apiResponse(201,createdUser,"User registered Successful
 
 })
 
-export {registerUser}
+
+const login = asyncWrapper(async (req,res)=>{
+   const {email,password}= req.body 
+   if([email,password].some((feild)=>feild?.trim()===""))
+      throw new apiError(400,"Kindly Enter Your Email and Password !!")
+
+   const user = await User.findOne({email:email}) ;
+
+   if(!user)
+      throw new apiError(404,"No User with this Email Exists , Try Again !")
+
+   const passwordCheck = await user.isPasswordCorrect(password) ;
+   if(!passwordCheck)
+      throw new apiError(400,"The Password you have entered is incorrect !! ")
+
+   //Tokens : Using the pre methods in the schema 
+   const accessToken =  user.generateAccessToken()
+   const refreshToken =  user.generateRefreshToken()
+
+   if(!accessToken )
+      throw new apiError(400,"Error occured while generating the accessToken !!")
+
+   if(!refreshToken)
+      throw new apiError(400,"Error occured while generating the refreshToken !!")
+
+      //saving this to the user feild 
+      user.refreshToken = refreshToken
+      await user.save({validateBeforeSave:false}) ;
+   
+      const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
+
+
+       const cookieOptions =
+       {
+         httpOnly :true ,
+         maxAge:7*24*60*60*1000,
+         sameSite:"strict",
+         secure :process.env.NODE_ENV
+       }  
+       return res.status(200)
+       .cookie("accessToken",accessToken,cookieOptions)
+       .cookie("refreshToken",refreshToken,cookieOptions)
+       .json(new apiResponse(201,loggedInUser,"User Successfully Logged In !"))
+
+
+})
+
+
+const logout = asyncWrapper(async (req,res)=>{
+   const user = await User.findByIdAndUpdate(req.user?._id , 
+      { $unset:{refreshToken:""} },{new:true})
+
+      const cookieOptions =   {
+         httpOnly :true ,
+         maxAge:7*24*60*60*1000,
+         sameSite:"strict",
+         secure :process.env.NODE_ENV
+       }
+
+       return res.status(201)
+       .clearCookie("accessToken",cookieOptions)
+       .clearCookie("refreshToken",cookieOptions)
+       .json(new apiResponse(201,{},"Successfully logged out the User !!"))
+})
+
+
+
+
+
+
+
+export {registerUser,login,logout}

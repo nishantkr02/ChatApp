@@ -22,8 +22,9 @@ const userSchema = new mongoose.Schema({
         type:String,
        
     },
-    refreshToke:{
-        type:String
+    refreshToken:{
+        type:String,
+        default:""
     }
 
 },{timestamps:true})
@@ -53,7 +54,7 @@ userSchema.methods.isPasswordCorrect = async function(password){
 
 
 //Method to generate access token : jwt.sign(payload,secretCode,{expiresIn:expirytime})
-userSchema.method.generateAccessToken = function(){
+userSchema.methods.generateAccessToken = function(){
     const payload = {
         _id:this._id ,
         password :this.password,
@@ -63,7 +64,7 @@ userSchema.method.generateAccessToken = function(){
 }
 
 //Method to generate Refresh token :
-userSchema.method.generateRefreshToken = function(){
+userSchema.methods.generateRefreshToken = function(){
     const payload = {
         _id:this._id 
        /*  password :this.password,

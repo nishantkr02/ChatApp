@@ -29,13 +29,20 @@ import fs from 'fs'
 
            //Now file has been uploaded 
            console.log("File has been uploaded successfully..!!",uploadResponse.url)
-           fs.unlink(localFilePath) 
+           fs.unlink(localFilePath, (err) => {
+            if (err) console.error("Error deleting file:", err);
+          }) 
            return uploadResponse ;
 
         } catch (error) {
-            //if the file is failed to be uploaded , then we should remove that file from our local server
-            fs.unlink(localFilePath) 
-            console.log("Error while uploading on clodinar",error) ;
+            //if the file is failed to be uploaded , then we should remove that file from our local server as well 5
+            fs.unlink(localFilePath,(err) => {
+                if (err) 
+                console.error("Error deleting file:", err);
+            
+             })
+             
+             console.log("Error while uploading on clodinar",error) ;
             return null ; 
         }
     }
