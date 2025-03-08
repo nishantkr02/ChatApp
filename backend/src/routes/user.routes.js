@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, registerUser ,logout,updateAvatar} from "../controllers/user.controllers.js";
+import { login, registerUser ,logout,updateAvatar, getCurrentUser} from "../controllers/user.controllers.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyUser } from "../middlewares/auth.middleware.js";
 
@@ -13,7 +13,7 @@ userRouter.route("/logout").get(verifyUser,logout)
 
 userRouter.route("/update-avatar").patch(verifyUser,upload.single("avatar"),updateAvatar)
 
-
+userRouter.route("/current-user").get(verifyUser,getCurrentUser)
 
 
 

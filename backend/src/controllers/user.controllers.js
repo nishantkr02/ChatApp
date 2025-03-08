@@ -157,8 +157,15 @@ const updatedUser = await User.findByIdAndUpdate(req.user?._id,
 })
 
 
+const getCurrentUser = asyncWrapper(async (req,res)=>{
+   const currentUser = req.user
+
+   if(!req.user)
+      throw new apiError(400,"You are not Logged In !!")
+
+   res.status(200).json(new apiResponse(200,currentUser,"Current User Fetched !!"))
+}) 
 
 
 
-
-export {registerUser,login,logout,updateAvatar }
+export {registerUser,login,logout,updateAvatar,getCurrentUser }
