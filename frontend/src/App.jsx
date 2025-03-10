@@ -1,21 +1,31 @@
 import './App.css'
 import Layout from './Layout'
-import { useAuthStore } from './store/useAuthStore'
+import { useAuthStore } from './store/useAuthStore.js'
 import { useEffect } from 'react'
-function App() {
+import {Loader} from "lucide-react"
 
-  const {currentUser ,checkAuthStatus} = useAuthStore()
+function App() {
+  
+  const {currentUser ,checkAuthStatus,isCheckingAuth} = useAuthStore()
 
   useEffect (()=>{
     checkAuthStatus()
   },[checkAuthStatus])
 
-  console.log("Current Authenticated user is :",currentUser)
+  if(isCheckingAuth )
+    return(
+  <div className='flex items-center justify-center h-screen'>
+  <Loader className='size-10 animate-spin' />
+  </div>
+  );
+
+
   return (
     <div className="App">
       <Layout />
     </div>
   )
+ 
 }
 
 export default App

@@ -22,6 +22,19 @@ import {axiosInstance} from "../lib/axios"
          } finally{
             set({isCheckingAuth:false})
          }
+      },
+      signUp : async(data)=>{
+         try {
+            set({isSigningUp:true})
+            const response = await axiosInstance.post('/user/register-user',data)
+
+            
+         } catch (error) {
+            console.log("Error while signing up user via axios :: ", error) 
+         }finally{
+            set({isSigningUp:false})
+         }
+
       }
     }))
 

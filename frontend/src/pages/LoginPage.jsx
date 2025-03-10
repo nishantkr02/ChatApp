@@ -1,8 +1,10 @@
 import React from 'react'
 
 function LoginPage() {
+  
+
   return (
-    <div>LoginPage</div>
+    <div className='text-red-400'>LoginPage , hi there</div>
   )
 }
 
