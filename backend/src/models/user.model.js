@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
     },
     avatar:{
         type:String,
+        default:"https://img.freepik.com/free-vector/user-circles-set_78370-4704.jpg?t=st=1741662520~exp=1741666120~hmac=8e02001d000b300d861d00f6aeb7b61a6e1dda3d901a9229fc7e14178816131e&w=740"
        
     },
     refreshToken:{

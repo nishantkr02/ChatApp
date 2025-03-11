@@ -4,6 +4,7 @@ import { useAuthStore } from './store/useAuthStore.js'
 import { useEffect } from 'react'
 import {Loader} from "lucide-react"
 
+
 function App() {
   
   const {currentUser ,checkAuthStatus,isCheckingAuth} = useAuthStore()
@@ -23,6 +24,7 @@ function App() {
   return (
     <div className="App">
       <Layout />
+      
     </div>
   )
  

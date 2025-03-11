@@ -25,26 +25,26 @@ if(existingUser)
 
 
 //step 4 :Check if all media files are provided or not ,although it is not required feild
-const avatarLocalPath = req.file?.path
+/* const avatarLocalPath = req.file?.path
 //console.log("File from the multer ",avtarLocalPath);
 if(!avatarLocalPath){
    throw new apiError(400,"Kindly provide the Avatar file ! Avatar is required !!")
 }
+ */
 
-
-//step 5 : Upload them to cloudinary ,get the url for the image from clodinary response
-const avatar = await uploadOnCloudinary(avatarLocalPath)
+//step 5 : Upload them to cloudinary ,get the url for the image from clodinary response  : Removed this for now
+/* const avatar = await uploadOnCloudinary(avatarLocalPath)
 if(!avatar){
    throw new apiError(400,"Failed to upload on Cloudinary !!")
 }
-
+ */
 
 //Step 6: finally create the new user object and save that to db 
 const newUser = await User.create({
    name:name,
    email:email,
    password :password,
-   avatar:avatar?.url
+   //avatar:avatar?.url
 })
 
 
