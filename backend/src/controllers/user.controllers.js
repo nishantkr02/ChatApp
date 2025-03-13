@@ -116,8 +116,7 @@ const logout = asyncWrapper(async (req,res)=>{
 
       const cookieOptions =   {
          httpOnly :true ,
-         maxAge:7*24*60*60*1000,
-         sameSite:"strict",
+        // maxAge:7*24*60*60*1000, : not necessary
          secure :process.env.NODE_ENV
        }
 

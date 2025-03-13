@@ -1,8 +1,11 @@
 import './App.css'
-import Layout from './Layout'
+
 import { useAuthStore } from './store/useAuthStore.js'
 import { useEffect } from 'react'
 import {Loader} from "lucide-react"
+import { Outlet } from 'react-router-dom'
+import Navbar from './components/Navbar'
+import { Toaster } from 'react-hot-toast'
 
 
 function App() {
@@ -23,7 +26,9 @@ function App() {
 
   return (
     <div className="App">
-      <Layout />
+        <Toaster/>
+        <Navbar />
+        <Outlet/>
       
     </div>
   )

@@ -2,7 +2,7 @@ import React from 'react'
 
 function SettingsPage() {
   return (
-    <div>SettingsPage</div>
+    <div className='text-red-400'>SettingsPage</div>
   )
 }
 

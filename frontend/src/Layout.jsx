@@ -8,11 +8,7 @@ function Layout() {
  
   return (
     <div>
-       <Toaster/>
-        <Navbar />
-        <Outlet/>
        
-     
     </div>
   )
 }

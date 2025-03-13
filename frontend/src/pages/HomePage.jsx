@@ -5,11 +5,10 @@ function HomePage() {
   const {currentUser } = useAuthStore()
 
 
-  
-  if(!currentUser)
-    return<Navigate to="login"/>
+
+    
   return (
-    <div>HomePage</div>
+    <div className='h-full  mt-10  border border-white'>HomePage</div>
   )
 }
 
