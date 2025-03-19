@@ -10,7 +10,7 @@ import { Toaster } from 'react-hot-toast'
 
 function App() {
   
-  const {currentUser ,checkAuthStatus,isCheckingAuth} = useAuthStore()
+  const {checkAuthStatus,isCheckingAuth} = useAuthStore()
 
   useEffect (()=>{
     checkAuthStatus()
@@ -26,7 +26,33 @@ function App() {
 
   return (
     <div className="App">
-        <Toaster/>
+        <Toaster
+       toastOptions={{
+        success: {
+          style: {
+            background: "#212f3d",  // green background for a clean look
+            color: "#f4f6f7",  // yellow text for success
+            border: "2px solid #27ae60",  // Green border
+            padding: "12px",
+            fontWeight: "bold",
+            boxShadow: "0px 4px 10px rgba(76, 175, 80, 0.2)", // Subtle shadow
+          },
+          icon: "✔",
+        },
+        error: {
+          style: {
+            background: "#212f3d",  // White background for a clean look
+            color: "#f4f6f7",  // Red text for error
+            border: "2px solid #e74c3c ",  // Red border
+            padding: "12px",
+            fontWeight: "bold",
+            boxShadow: "0px 4px 10px rgba(211, 47, 47, 0.2)", // Subtle shadow
+          },
+          icon: "⚠️",
+        },
+        
+      }}
+        />
         <Navbar />
         <Outlet/>
       

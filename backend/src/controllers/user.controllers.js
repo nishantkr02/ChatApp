@@ -13,14 +13,14 @@ console.log("Entered Data :" ,{name,email,password})
 
 //Step 2 : verify whether all data is provided or not
 if([name,email,password].some((feild)=>feild?.trim()==="")){
- throw new apiError(400,"All feilds are required !!Check if you've entered name ,email and passord feilds correctly . ")
+ throw new apiError(400,"All feilds are required !! Check if you've entered name ,email and passord feilds correctly . ")
 }
 
 
 //Step 3 : Check if user already exists 
 const existingUser = await User.findOne({email:email})
 if(existingUser)
-   throw new apiError(400,"User with this Email already Exist ,Kindly user Different Email")
+   throw new apiError(400,"User with this Email already Exist , Kindly user a different Email")
 
 
 
@@ -66,16 +66,16 @@ res.status(201).json(new apiResponse(201,createdUser,"User registered Successful
 const login = asyncWrapper(async (req,res)=>{
    const {email,password}= req.body 
    if([email,password].some((feild)=>feild?.trim()===""))
-      throw new apiError(400,"Kindly Enter Your Email and Password !!")
+      throw new apiError(400," Enter Your Email and Password !!")
 
    const user = await User.findOne({email:email}) ;
 
    if(!user)
-      throw new apiError(404,"No User with this Email Exists , Try Again !")
+      throw new apiError(404,"No User with this Email Exists !")
 
    const passwordCheck = await user.isPasswordCorrect(password) ;
    if(!passwordCheck)
-      throw new apiError(400,"The Password you have entered is incorrect !! ")
+      throw new apiError(400,"Incorrect Password , Try Again !! ")
 
    //Tokens : Using the pre methods in the schema 
    const accessToken =  user.generateAccessToken()
@@ -104,7 +104,7 @@ const login = asyncWrapper(async (req,res)=>{
        return res.status(200)
        .cookie("accessToken",accessToken,cookieOptions)
        .cookie("refreshToken",refreshToken,cookieOptions)
-       .json(new apiResponse(201,loggedInUser,"User Successfully Logged In !"))
+       .json(new apiResponse(201,loggedInUser,"Successfully Logged In !"))
 
 
 })
@@ -151,7 +151,7 @@ const updatedUser = await User.findByIdAndUpdate(req.user?._id,
       throw new apiError(500,"Internal Server Error : Cannot find or Update the user !!")
 
    res.status(201)
-   .json(new apiResponse(201,updatedUser,"Your Profile picture updated Successfully !!"))
+   .json(new apiResponse(201,updatedUser,"Your Profile picture has been updated Successfully !!"))
 
 })
 
