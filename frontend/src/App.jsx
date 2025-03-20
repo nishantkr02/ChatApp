@@ -6,12 +6,13 @@ import {Loader} from "lucide-react"
 import { Outlet } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import { Toaster } from 'react-hot-toast'
+import { useThemeStore } from './store/useThemeStore.js'
 
 
 function App() {
   
   const {checkAuthStatus,isCheckingAuth} = useAuthStore()
-
+  const {currentTheme,switchTheme}= useThemeStore()
   useEffect (()=>{
     checkAuthStatus()
   },[checkAuthStatus])
@@ -25,7 +26,7 @@ function App() {
 
 
   return (
-    <div className="App">
+    <div  data-theme={currentTheme} className='max-w-screen-2xl'>
         <Toaster
        toastOptions={{
         success: {
@@ -53,8 +54,10 @@ function App() {
         
       }}
         />
-        <Navbar />
-        <Outlet/>
+        <Navbar  />
+     
+         <Outlet />
+   
       
     </div>
   )
