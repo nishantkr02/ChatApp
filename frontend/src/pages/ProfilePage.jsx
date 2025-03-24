@@ -33,8 +33,7 @@ setSelectedImg(URL.createObjectURL(avatarLocalFile));
 
 const formData = new FormData()
 formData.append("avatar",avatarLocalFile)
-await updateAvatar(formData)
-
+  await updateAvatar(formData)
 
 }
 

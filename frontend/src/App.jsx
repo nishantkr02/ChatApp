@@ -1,4 +1,4 @@
-import './App.css'
+
 
 import { useAuthStore } from './store/useAuthStore.js'
 import { useEffect } from 'react'
@@ -26,7 +26,7 @@ function App() {
 
 
   return (
-    <div  data-theme={currentTheme} className='max-w-screen-2xl'>
+    <div  data-theme={currentTheme} >
         <Toaster
        toastOptions={{
         success: {
