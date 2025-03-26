@@ -10,7 +10,7 @@ const ProfilePage = () => {
 const{currentUser,isProfileUpdating,updateAvatar} = useAuthStore()
 const [selectedImg, setSelectedImg] = useState(null);
 
-console.log("Current User",currentUser)
+//console.log("Current User",currentUser)
 
 
 

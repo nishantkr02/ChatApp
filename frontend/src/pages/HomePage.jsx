@@ -7,9 +7,13 @@ import NoChatSelected from '../components/NoChatSelected.jsx'
 import Sidebar from '../components/Sidebar.jsx'
 
 
+
 function HomePage() {
   const {currentSelectedChat} = useChatStore()
+  const{currentUser} = useAuthStore()
 
+  if(!currentUser)
+   return <Navigate to="/login" />
 
 
     

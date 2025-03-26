@@ -6,12 +6,12 @@ import MessageInput from './MessageInput';
 import MessageSkeleton from "./Skeletons/MessageSkeleton"
 function ChatContainer() {
 
-    const {isChatMessagesLoading,selectedChatMessages,getChatMessages,currentSelectedChat}= useChatStore()
+    const {isChatMessagesLoading,getChatMessages,currentSelectedChat}= useChatStore()
      const userId = currentSelectedChat._id ;
     useEffect(()=>{
       getChatMessages(userId)
-    },[])
-        
+    },[getChatMessages])
+        //console.log('Current chat :: ',currentSelectedChat)
     if(isChatMessagesLoading)
         return (
             <div className="flex-1 flex flex-col overflow-auto">

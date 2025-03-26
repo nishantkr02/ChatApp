@@ -23,7 +23,7 @@ app.use("/api/v1/user",userRouter)
 
 //message Route
 import messageRouter from "./routes/message.routes.js";
-app.use("/api/v1/chat",messageRouter)
+app.use("/api/v1/chats",messageRouter)
 
 app.get("/",(req,res)=>{
     res.send("Hi there ..")

@@ -32,8 +32,16 @@ const getMessagesBetweenUsers = asyncWrapper(async(req,res)=>{
 
 const sendMessage = asyncWrapper(async(req,res)=>{
     const  {id:receiverId} = req.params
+    console.log("req.params",req.params)
+    console.log("req.body",req.body.text);
+    console.log("req.file",req.file)
     const {text}=req.body
-    const mediaLocalPath= req.file?.media
+    const mediaLocalPath= req.file.path
+            console.log("Text  file",text)
+                console.log("media file",mediaLocalPath)
+
+    if(!text && !mediaLocalPath)
+        throw new apiError(401,"This message body is empty !! check the frontend")
 
     let mediaUrl ;
     if(mediaLocalPath){
@@ -41,13 +49,15 @@ const sendMessage = asyncWrapper(async(req,res)=>{
         if(!response)
             throw new apiError(400,"Error while uploading on Cloudinary !!")
         mediaUrl = response.url ;
+        console.log('media url',mediaUrl)
     }
+    
 
     const newMessage = await Message.create ({
         sender:req.user?._id,
         receiver:receiverId,
-        text:text.trim(),
-        media :mediaUrl
+        text:text?.trim(),
+        media :mediaUrl 
     })
 
     if(!newMessage)
