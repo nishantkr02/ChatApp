@@ -133,8 +133,8 @@ const updateAvatar  = asyncWrapper(async(req,res)=>{
  if(!avatarLocalPath)
    throw new apiError(400,"Kindly select a new Photo for avatar !!")
 
- const newAvatar = await uploadOnCloudinary(avatarLocalPath)
-  if(!newAvatar.url)
+ const newAvatar = await uploadOnCloudinary(avatarLocalPath,"chatDP")
+  if(!newAvatar)
    throw new apiError(400,"Error while uploading on Cloudinary !!")
 
 // Finding the user updating the feild and selecting the sensitive feild to skip 

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { useChatStore } from '../store/useChatStore'
-import { Image, Send, X } from "lucide-react";
+import { Image, Send, X ,Loader2} from "lucide-react";
 import toast from 'react-hot-toast';
 function MessageInput() {
 const[text,setText] = useState("")
@@ -8,7 +8,7 @@ const[mediaPreview,setMediaPreview]= useState(null)
 
 const [mediaFile,setMediaFile]= useState(null)
 const fileInputRef = useRef(null)
-const{sendMessage}= useChatStore()
+const{sendMessage,isMessageSending}= useChatStore()
 
 const handleMediaPreview= async (e)=>{
     const mediaLocalFile = e.target.files[0]
@@ -37,7 +37,7 @@ console.log("text& media",text,mediaPreview)
  if(!text.trim() && !mediaPreview )
   return ; 
 
- console.log("text inout",text)
+ console.log("is Message Sending",isMessageSending)
 
  const formData = new FormData()
  if(mediaFile)
@@ -84,10 +84,12 @@ try {
         <input
             type="text"
             className="w-full input input-bordered rounded-lg input-sm sm:input-md"
-            placeholder="Type a message..."
+            placeholder={`${isMessageSending?"Sending....":"Type a message...."}`}
+            disabled={isMessageSending}
             value={text}
             onChange={(e) => setText(e.target.value)}
           />
+          
           <input
             type="file"
             accept="image/*"
@@ -111,7 +113,10 @@ try {
           className="btn btn-sm btn-circle"
           disabled={!text.trim() && !mediaPreview}
         >
-          <Send size={22} />
+        {isMessageSending ? 
+        <Loader2 className= "animate-spin text-gray-500" /> : <Send size={22} />
+          }
+         
         </button>
       </form>
     </div>

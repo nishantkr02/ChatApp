@@ -14,7 +14,7 @@ import fs from 'fs'
         
     });
 
-    const uploadOnCloudinary = async (localFilePath)=>{
+    const uploadOnCloudinary = async (localFilePath,folder)=>{
         try {
             if(!localFilePath)
                 return null ;
@@ -22,8 +22,8 @@ import fs from 'fs'
             //upload 
             const uploadResponse = await cloudinary.uploader.
             upload(localFilePath, {
-               folder:'chatDP',
                use_filename: true, 
+               folder:folder,
                resource_type:'auto'
            } )
 

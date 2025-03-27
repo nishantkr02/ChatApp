@@ -52,9 +52,15 @@ function App() {
         
       }}
         />
+        <div className=''>
         <Navbar  />
+        </div>
+
+        <div className='h-full'>
+    
+        <Outlet />
+        </div>
      
-         <Outlet />
    
       
     </div>

@@ -1,7 +1,7 @@
 import {create} from 'zustand'
-import {axiosInstance} from "../lib/axios"
+import {axiosInstance} from "../utils/axios.js"
 import toast from "react-hot-toast"
-import extractTextFromHtmlResponse from '../lib/htmlParser.js'
+import extractTextFromHtmlResponse from '../utils/htmlParser.js'
 //const useAuthStore = create(()=>({}))
  
     const useAuthStore = create((set)=>({
@@ -30,7 +30,7 @@ import extractTextFromHtmlResponse from '../lib/htmlParser.js'
          try {
             set({isSigningUp:true})
             const response = await axiosInstance.post('/user/register-user',data)
-            set({currentUser :response.data?.data})
+            //set({currentUser :response.data?.data})
             toast.success("User Registered Successfully .")
             setTimeout(() => navigate("/login"), 3000);
          } catch (error) {
