@@ -1,9 +1,15 @@
-import express from "express"
+
 import cors from "cors"
 import cookieParser from "cookie-parser";
+import express from "express"
+
+
+
 
 
 const app = express();
+
+
 
 app.use(cors({
     origin:process.env.CORS_ORIGIN ,
@@ -25,7 +31,5 @@ app.use("/api/v1/user",userRouter)
 import messageRouter from "./routes/message.routes.js";
 app.use("/api/v1/chats",messageRouter)
 
-app.get("/",(req,res)=>{
-    res.send("Hi there ..")
-})
-export default app ;
+
+export {app} ;

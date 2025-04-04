@@ -2,22 +2,30 @@ import {create} from 'zustand'
 import {axiosInstance} from "../utils/axios.js"
 import toast from "react-hot-toast"
 import extractTextFromHtmlResponse from '../utils/htmlParser.js'
-//const useAuthStore = create(()=>({}))
- 
-    const useAuthStore = create((set)=>({
+
+import  {io} from "socket.io-client"
+
+
+   const BASE_URL = "http://localhost:4000/"
+
+   //const useAuthStore = create((set,get)=>({}))
+    const useAuthStore = create((set,get)=>({
       currentUser:null,
       isSigningUp :false,
       isLoggingIn:false,
       isUpdatingProfile:false,
       isCheckingAuth :true,
       isProfileUpdating:false,
+      socket:null ,
+
+
       //when we refresh the page , it will used for loading screen
       checkAuthStatus :async()=>{
          try {
             const response= await axiosInstance.get('/user/current-user');
           
                set({currentUser :response.data?.data})
-
+               get().connectSocket()
          } catch (error) {
             console.log("Error while fetching the current user via axios :: ", error)
             set({currentUser:null})
@@ -32,7 +40,8 @@ import extractTextFromHtmlResponse from '../utils/htmlParser.js'
             const response = await axiosInstance.post('/user/register-user',data)
             //set({currentUser :response.data?.data})
             toast.success("User Registered Successfully .")
-            setTimeout(() => navigate("/login"), 3000);
+           
+            setTimeout(() => navigate("/login"), 2000);
          } catch (error) {
             console.log("Error while signing up user via axios :: ", error) 
             const errorMsg = extractTextFromHtmlResponse(error.response?.data)
@@ -44,6 +53,8 @@ import extractTextFromHtmlResponse from '../utils/htmlParser.js'
          }
 
       },
+     
+
       login:async(data,navigate)=>{
          try {
             set({isLoggingIn:true} )
@@ -55,8 +66,8 @@ import extractTextFromHtmlResponse from '../utils/htmlParser.js'
                icon: "🔥",
                style: { border: "1px solid red", padding: "16px" },
              }); */
-
-            setTimeout(() => navigate("/"), 2000);
+             get().connectSocket()
+            navigate("/")
          } catch (error) {
             console.log("Error while loging In the user via axios :: ", error) 
         
@@ -74,14 +85,14 @@ import extractTextFromHtmlResponse from '../utils/htmlParser.js'
             const response  = await axiosInstance.get('/user/logout')
             set({currentUser:null})
             toast.success("User logged out ");
+            get().disconnectSocket()
             setTimeout(() => navigate("/login"), 1500);
+           
          } catch (error) {
             //toast.error(`Internal Server Error : ${error.message}`)
             const errorMsg = extractTextFromHtmlResponse(error.response?.data)
             toast.error(`Failed to Logout : ${errorMsg}`)
          }
-        
-
       }
       ,
       updateAvatar: async(data)=>{
@@ -103,7 +114,26 @@ import extractTextFromHtmlResponse from '../utils/htmlParser.js'
          }finally{
                set({isProfileUpdating:false})
          }
-      }
+      },
+       //for connecting to the socket whenever we need like , right after login
+       connectSocket : ()=>{
+         const {currentUser}= get()
+         if(!currentUser || get().socket?.connected)
+            return  ; 
+         
+         const socket = io(BASE_URL)
+         socket.connect() ;
+         console.log("Socket instance :",socket)
+         set({socket:socket})
+       },
+        //for dissconnecting to the socket whenever we need like , right after logout
+      disconnectSocket : ()=>{
+            if(get().socket?.connected)
+              {
+               get().socket.disconnect()
+               set({socket:null})
+              }
+      },
     }))
 
 
