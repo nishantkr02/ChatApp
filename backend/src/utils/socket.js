@@ -40,7 +40,7 @@ io.on("connection",(socket)=>{
 
         delete onlineUsers[userId]
 
-        io.emit("checkOnlineUser",Object.keys(onlineUsers))
+        io.emit("checkOnlineUsers",Object.keys(onlineUsers))
     })
 })
 

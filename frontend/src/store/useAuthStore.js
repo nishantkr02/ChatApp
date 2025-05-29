@@ -6,7 +6,9 @@ import extractTextFromHtmlResponse from '../utils/htmlParser.js'
 import  {io} from "socket.io-client"
 
 
-   const BASE_URL = "http://localhost:4000/" // the backend url
+   const BASE_URL  = import.meta.env.MODE === "development" ? "http://localhost:4000" : "/"; //setting up production env
+
+   //"http://localhost:4000/" // the backend url
 
    //const useAuthStore = create((set,get)=>({}))
     const useAuthStore = create((set,get)=>({
