@@ -2,18 +2,25 @@ import React, { useEffect } from 'react'
 import { useChatStore } from '../store/useChatStore'
 import { Loader,Users } from 'lucide-react';
 import SidebarSkeleton from './Skeletons/SidebarSkeleton';
+import { useAuthStore } from '../store/useAuthStore';
+import { useState } from 'react';
 function Sidebar() {
     const{getAllChats,allChats,isAllChatsLoading,currentSelectedChat,setCurrentSelectedChat}= useChatStore()
 
     //for socket io part
-    const onlineUsers =[];
+    const {activeUsers} =useAuthStore()
+    const [showOnlineOnly,setShowOnlineOnly]= useState(false)
 
         useEffect(()=>{
             getAllChats();
             //console.log("ALl chats",allChats)
         },[getAllChats])
 
-       // console.log("ALl chats",allChats)
+       //Filtering the online users 
+       const filteredUsers =showOnlineOnly? allChats.filter(user=>activeUsers.includes(user._id)) : allChats  ;
+
+
+
         if(isAllChatsLoading)
             return <div> <SidebarSkeleton /> </div>
   return (
@@ -23,8 +30,9 @@ function Sidebar() {
           <Users className="size-6" />
           <span className="font-medium hidden lg:block">Contacts</span>
         </div>
+
         {/* TODO: Online filter toggle */}
-       {/*  <div className="mt-3 hidden lg:flex items-center gap-2">
+        <div className="mt-3 hidden lg:flex items-center gap-2">
           <label className="cursor-pointer flex items-center gap-2">
             <input
               type="checkbox"
@@ -34,12 +42,12 @@ function Sidebar() {
             />
             <span className="text-sm">Show online only</span>
           </label>
-          <span className="text-xs text-zinc-500">({onlineUsers.length - 1} online)</span>
-        </div> */}
+          <span className="text-xs text-zinc-500">({activeUsers?.length - 1} online)</span>
+        </div> 
       </div>
 
       <div className="overflow-y-auto w-full py-3">
-        {allChats.map((user) => (
+        {filteredUsers.map((user) => (
           <button
             key={user._id}
             onClick={() => setCurrentSelectedChat(user)}
@@ -55,7 +63,7 @@ function Sidebar() {
                 alt={user.name}
                 className="size-12 object-cover rounded-full"
               />
-              {onlineUsers?.includes(user._id) && (
+              {activeUsers?.includes(user._id) && (
                 <span
                   className="absolute bottom-0 right-0 size-3 bg-green-500 
                   rounded-full ring-2 ring-zinc-900"
@@ -67,15 +75,15 @@ function Sidebar() {
             <div className="hidden lg:block text-left min-w-0">
               <div className="font-medium truncate">{user.name}</div>
               <div className="text-sm text-zinc-400">
-                {onlineUsers?.includes(user._id) ? "Online" : "Offline"}
+                {activeUsers?.includes(user?._id) ? "Online" : "Offline"}
               </div>
             </div>
           </button>
         ))}
 
-       {/*  {filteredUsers.length === 0 && (
+        {filteredUsers.length === 0 && (
           <div className="text-center text-zinc-500 py-4">No online users</div>
-        )} */}
+        )} 
       </div>
     </aside>
   )

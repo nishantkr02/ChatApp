@@ -2,6 +2,8 @@ import { create } from "zustand";
 import toast from "react-hot-toast"
 import { axiosInstance } from "../utils/axios.js";
 import extractTextFromHtmlResponse from '../utils/htmlParser.js'
+import { useAuthStore } from "./useAuthStore.js";
+
 const useChatStore = create((set,get)=>({
     currentSelectedChat:null,
     allChats:[],
@@ -40,9 +42,31 @@ const useChatStore = create((set,get)=>({
     setCurrentSelectedChat : (selectedChat)=>{
         //set({selectedChatMessages:null})
         set({currentSelectedChat:selectedChat})
-    }
-        
-    ,
+    },
+    subscribeToMessages : () =>{
+        const {currentSelectedChat}= get()
+        if(!currentSelectedChat)
+            return ;
+
+        //this is how we access the data from the other stores ,
+        const socket = useAuthStore.getState().socket ; 
+
+        //This is not
+        socket.on("newMessage",(newMessage)=>{
+            if(newMessage.sender!==currentSelectedChat._id) return ; 
+            //otherwise the messagea will be shown in any of the chats if we opened them at that moement . while we get the messages .
+
+            set({selectedChatMessages:[...get().selectedChatMessages,newMessage ] })
+        })
+
+
+    } ,
+    unsubscribeFromMessages:()=>{
+         //this is how we access the data from the other stores ,
+        const socket = useAuthStore.getState().socket ; 
+        socket.off("newMessage")
+    },
+
     sendMessage:async(data)=>{
             const {currentSelectedChat,selectedChatMessages} =get()
            // console.log({currentSelectedChat,selectedChatMessages})

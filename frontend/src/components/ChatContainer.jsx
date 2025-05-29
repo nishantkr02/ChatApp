@@ -7,19 +7,32 @@ import MessageSkeleton from "./Skeletons/MessageSkeleton"
 import StartChat from './StartChat';
 import { useAuthStore } from '../store/useAuthStore';
 import { formatMessageTime } from '../utils/timeParser';
+import { useRef } from 'react';
 
 
 function ChatContainer() {
 
-    const {isChatMessagesLoading,getChatMessages,currentSelectedChat,selectedChatMessages}= useChatStore()
+    const {isChatMessagesLoading,getChatMessages,currentSelectedChat,selectedChatMessages,subscribeToMessages,unsubscribeFromMessages}= useChatStore()
      
      const {currentUser}= useAuthStore()
 
-
+    const messageEndRef = useRef(null)
 
     useEffect(()=>{
       getChatMessages(currentSelectedChat._id )
-    },[currentSelectedChat._id,getChatMessages])
+      subscribeToMessages()
+
+      return ()=>{
+        unsubscribeFromMessages()
+      }
+    },[currentSelectedChat._id,getChatMessages,subscribeToMessages,unsubscribeFromMessages])
+   
+    //This is scrolling down to the last sent message :: how the fuck ??
+    useEffect(()=>{
+      if(messageEndRef.current && selectedChatMessages)
+      messageEndRef.current.scrollIntoView({behavior:"smooth"}) ;
+
+    },[selectedChatMessages])
    
     if(isChatMessagesLoading)
         return (
@@ -41,7 +54,9 @@ function ChatContainer() {
           <div
           key={message._id}
           className={`chat ${message.sender===currentSelectedChat?._id ?"chat-start":"chat-end"}`}
-          > {/* All custom classes like chat-end and chat-start class are from daisy ui */}
+          ref={messageEndRef}
+          >
+             {/* All custom classes like chat-end and chat-start class are from daisy ui */}
 
          <div className='chat-image avatar mx-2 mb-4'> 
           <div className='size-10 rounded-full border'>
@@ -71,7 +86,7 @@ function ChatContainer() {
           
         </div>}
         </div>
-            <div className='fixed w-2/3  bottom-0 '>
+            <div className=''>
             <MessageInput />
             </div>
       

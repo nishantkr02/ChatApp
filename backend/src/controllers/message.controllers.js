@@ -1,7 +1,7 @@
 import { asyncWrapper,apiError,apiResponse ,uploadOnCloudinary } from "../utils/utilsDirectory.js";
 import { User } from "../models/user.model.js";
 import { Message } from "../models/message.model.js";
-
+import { getReceiverSocketId ,io} from "../utils/socket.js";
 
 const getAllChats = asyncWrapper(async(req,res)=>{
     const allChats = await User.find({_id:{$ne:req.user?._id}}).select("-password -refreshToken")
@@ -35,9 +35,10 @@ const getMessagesBetweenUsers = asyncWrapper(async(req,res)=>{
 
 const sendMessage = asyncWrapper(async(req,res)=>{
     const  {id:receiverId} = req.params
-    console.log("req.params",req.params)
+    /* console.log("req.params",req.params)
     console.log("req.body",req.body.text);
-    console.log("req.file",req.file)
+    console.log("req.file",req.file) */
+
     const {text}=req.body
     const mediaLocalPath= req.file?.path
             console.log("Text  file",text)
@@ -67,7 +68,13 @@ const sendMessage = asyncWrapper(async(req,res)=>{
         throw new apiError(501,"Cannot send this message !!")
 
     //Here will go the Socket IO code
-    console.log("New message",newMessage)
+     const receiverSocketId = getReceiverSocketId(receiverId) // this will give the socketId of the receiver
+      if(receiverSocketId){
+        io.to(receiverSocketId).emit("newMessage",newMessage)
+      }
+
+
+    //console.log("New message",newMessage)
 
     res.status(201).json(new apiResponse(201,newMessage,"Message Sent !"))
 

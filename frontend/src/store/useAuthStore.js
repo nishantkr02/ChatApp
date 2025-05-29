@@ -6,7 +6,7 @@ import extractTextFromHtmlResponse from '../utils/htmlParser.js'
 import  {io} from "socket.io-client"
 
 
-   const BASE_URL = "http://localhost:4000/"
+   const BASE_URL = "http://localhost:4000/" // the backend url
 
    //const useAuthStore = create((set,get)=>({}))
     const useAuthStore = create((set,get)=>({
@@ -17,6 +17,7 @@ import  {io} from "socket.io-client"
       isCheckingAuth :true,
       isProfileUpdating:false,
       socket:null ,
+      activeUsers:null ,
 
 
       //when we refresh the page , it will used for loading screen
@@ -83,6 +84,8 @@ import  {io} from "socket.io-client"
       logout:async(navigate)=>{
          try {
             const response  = await axiosInstance.get('/user/logout')
+           /*  const newActiveUsers = get().activeUsers.filter((user)=>user._id!==currentUser._id)
+            set({activeUsers:newActiveUsers}) */
             set({currentUser:null})
             toast.success("User logged out ");
             get().disconnectSocket()
@@ -121,13 +124,30 @@ import  {io} from "socket.io-client"
          if(!currentUser || get().socket?.connected)
             return  ; 
          
-         const socket = io(BASE_URL)
+
+          //The query object allows you to send custom key-value data as query parameters during the initial handshake with the Socket.IO server.
+         const socket = io(BASE_URL,{
+            query:{
+               userId:currentUser?._id
+            }
+         })
          socket.connect() ;
-         console.log("Socket instance :",socket)
+         //console.log("Socket instance :",socket)
          set({socket:socket})
+
+         //Listening for events :: This is gonna tell a user what other users are online ::
+         socket.on("checkOnlineUsers",(onlineUserIds)=>{
+               set({activeUsers:onlineUserIds})
+         })
+
+
+
+
+
        },
         //for dissconnecting to the socket whenever we need like , right after logout
       disconnectSocket : ()=>{
+         
             if(get().socket?.connected)
               {
                get().socket.disconnect()
