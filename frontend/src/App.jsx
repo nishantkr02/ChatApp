@@ -29,38 +29,47 @@ function App() {
   return (
     <div  data-theme={currentTheme} >
         <Toaster
-       toastOptions={{
-        success: {
-          style: {
-            background: "#212f3d",  // green background for a clean look
-            color: "#f4f6f7",  // yellow text for success
-            padding: "12px",
-            fontWeight: "bold",
-            boxShadow: "0px 4px 10px rgba(76, 175, 80, 0.2)", // Subtle shadow
-          },
-          icon: "✔",
-        },
-        error: {
-          style: {
-            background: "#212f3d",  // White background for a clean look
-            color: "#f4f6f7",  // Red text for error
-            padding: "12px",
-            fontWeight: "bold",
-            boxShadow: "0px 4px 10px rgba(211, 47, 47, 0.2)", // Subtle shadow
-          },
-          icon: "⚠️",
-        },
         
-      }}
-        />
-        <div className=''>
-        <Navbar  />
-        </div>
+       toastOptions={{
+        duration: 5000,
+    removeDelay: 1000,
+  success: {
+    style: {
+      background: "#212f3d",               // dark slate background
+      color: "#69ea6e",                    // bright green text for success
+      padding: "14px 20px",                // more comfortable padding
+      fontWeight: "400",                   // semi-bold
+      borderRadius: "8px",                 // rounded corners for modern look
+      boxShadow: "0 6px 15px rgba(105, 234, 110, 0.3)", // subtle green glow
+      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+      letterSpacing: "0.03em",
+      transition: "background-color 0.3s ease, box-shadow 0.3s ease",
+    },
+    icon: "✔",
+  },
+  error: {
+    style: {
+     background: "#1f2937", // dark gray/charcoal background for contrast
+    color: "#ff6b6b", // error red text
+    padding: "8px 14px",
+    fontWeight: "600",
+    borderRadius: "8px",
+    border: "2px solidrgb(250, 54, 54)",        // red border to indicate error clearly
+    boxShadow: "0 8px 15px rgba(255, 56, 56, 0.25)",  // subtle red glow
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    letterSpacing: "0.03em",
+    transition: "background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",
+    },
+    icon: "⚠️",
+  },
+}
 
-        <div className='h-full'>
-    
+       }
+        />
+        
+        <Navbar  />
         <Outlet />
-        </div>
+        
      
    
       

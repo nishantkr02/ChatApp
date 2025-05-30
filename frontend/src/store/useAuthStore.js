@@ -64,7 +64,7 @@ import  {io} from "socket.io-client"
             const response = await axiosInstance.post('/user/login',data)
             set({currentUser:response.data?.data})
             //console.log("Current User",response.data.data)
-           toast.success(` Successfully Logged in . Welcome ,  ${response.data?.data.name} 🎉`)
+           toast.success(` Welcome ,  ${response.data?.data.name} 🎉`)
             /* toast("Logged In Successfully !", {
                icon: "🔥",
                style: { border: "1px solid red", padding: "16px" },

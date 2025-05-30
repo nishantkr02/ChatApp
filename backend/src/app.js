@@ -2,12 +2,12 @@ import cors from "cors"
 import cookieParser from "cookie-parser";
 import express from "express"
 import path from "path";
-
+import { apiError } from "./utils/apiError.js";
 
 
 
 const app = express();
-
+ 
 
 
 app.use(cors({
@@ -20,7 +20,27 @@ app.use(express.static("public"))
 
 app.use(cookieParser())
 
+app.use((err,req, res,next) => {
+  console.error(err);
 
+  if (err instanceof apiError) {
+    return res.status(err.statusCode).json({
+      success: false,
+      message: err.message,
+      errors: err.errors,
+      data: err.data,
+      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
+    });
+  }
+
+  // fallback for other errors
+  res.status(500).json({
+    success: false,
+    message: 'Something went wrong',
+    errors: [],
+    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
+  });
+});
 
 
 //user Route
