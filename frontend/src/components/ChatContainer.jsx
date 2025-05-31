@@ -53,7 +53,7 @@ function ChatContainer() {
          {selectedChatMessages?.map((message)=>(
           <div
           key={message._id}
-          className={`chat ${message.sender===currentSelectedChat?._id ?"chat-start":"chat-end"}`}
+          className={`chat ${message.sender===currentSelectedChat?._id ?"chat-start ":"chat-end "}`}
           ref={messageEndRef}
           >
              {/* All custom classes like chat-end and chat-start class are from daisy ui */}
@@ -65,7 +65,7 @@ function ChatContainer() {
           </div>
 
          
-          <div className='chat-bubble flex flex-col mb-4 '>
+          <div className={`chat-bubble flex flex-col mb-4 ${message.sender===currentSelectedChat?._id ?" bg-primary text-primary-content":"bg-base-400 "}`}>
             {
               message.media && (
                 <img 

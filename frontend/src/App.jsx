@@ -12,7 +12,7 @@ import { useThemeStore } from './store/useThemeStore.js'
 function App() {
   
   const {checkAuthStatus,isCheckingAuth,activeUsers} = useAuthStore()
-  console.log("Online users",{activeUsers})
+  //console.log("Online users",{activeUsers})
   const {currentTheme,switchTheme}= useThemeStore()
   useEffect (()=>{
     checkAuthStatus()
@@ -49,8 +49,8 @@ function App() {
   },
   error: {
     style: {
-     background: "#1f2937", // dark gray/charcoal background for contrast
-    color: "#ff6b6b", // error red text
+     background: "#160248", // dark gray/charcoal background for contrast
+    color: "#c33f3f", // error red text
     padding: "8px 14px",
     fontWeight: "600",
     borderRadius: "8px",
@@ -60,7 +60,7 @@ function App() {
     letterSpacing: "0.03em",
     transition: "background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",
     },
-    icon: "⚠️",
+    icon: "❌",
   },
 }
 

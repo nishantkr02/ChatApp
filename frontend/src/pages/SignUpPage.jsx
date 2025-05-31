@@ -34,7 +34,7 @@ const success = validateForm()
 
 if(success===true){
   signUp(formData,navigate)
-  console.log("Form Data",formData)
+  //console.log("Form Data",formData)
 }
 
 
@@ -46,7 +46,7 @@ if(success===true){
 
 
   return (
-    <div className='  min-h-screen grid lg:grid-cols-2'>
+    <div className='  min-h-screen grid lg:grid-cols-2 mt-6'>
 
 {/* <<<<<<<<<<.........................Left Side */}
 

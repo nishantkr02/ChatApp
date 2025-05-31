@@ -16,8 +16,8 @@ const getMessagesBetweenUsers = asyncWrapper(async(req,res)=>{
     //get the id of the user we want to chat in the params 
     const {id:userToChatWith} = req.params
     const myUserId = req.user?._id
-   console.log("req.user :",myUserId)
-    console.log('user to chat with :',userToChatWith) 
+  // console.log("req.user :",myUserId)
+   // console.log('user to chat with :',userToChatWith) 
 
     const messages = await Message.find({
         $or:[
@@ -41,8 +41,8 @@ const sendMessage = asyncWrapper(async(req,res)=>{
 
     const {text}=req.body
     const mediaLocalPath= req.file?.path
-            console.log("Text  file",text)
-                console.log("media file",mediaLocalPath)
+           // console.log("Text  file",text)
+            //    console.log("media file",mediaLocalPath)
 
     if(!text && !mediaLocalPath)
         throw new apiError(401,"This message body is empty !! check the frontend")

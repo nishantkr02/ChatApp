@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useAuthStore } from '../store/useAuthStore';
 import ImagePattern from '../components/ImagePattern';
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
+
 function LoginPage() {
   const [showPassword,setShowPassword]= useState(false)
   const [formData,setFormData]= useState({
@@ -33,7 +34,7 @@ function LoginPage() {
   
   if(success===true){
     login(formData,navigate)
-    console.log("Form Data : ",formData)
+    //console.log("Form Data : ",formData)
   }
   }
 
@@ -43,7 +44,7 @@ function LoginPage() {
   return (
     <div className="h-full grid lg:grid-cols-2 ">
     {/* Left Side - Form */}
-    <div className="flex flex-col  justify-center items-center p-6 sm:p-12">
+    <div className="flex flex-col  justify-center items-center p-6 sm:p-12 ">
       <div className="w-full max-w-md space-y-8">
         {/* Logo */}
         <div className="text-center mb-8">

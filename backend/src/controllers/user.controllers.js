@@ -8,7 +8,7 @@ const registerUser = asyncWrapper( async(req,res)=>{
   
 //step 1: Get data from the frontend(user) :
 const {name,email,password}= req.body
-console.log("Entered Data :" ,{name,email,password})
+//console.log("Entered Data :" ,{name,email,password})
 
 
 //Step 2 : verify whether all data is provided or not
@@ -64,7 +64,9 @@ res.status(201).json(new apiResponse(201,createdUser,"User registered Successful
 
 
 const login = asyncWrapper(async (req,res)=>{
+
    const {email,password}= req.body 
+   
    if([email,password].some((feild)=>feild?.trim()===""))
       throw new apiError(400," Enter Your Email and Password !!")
 

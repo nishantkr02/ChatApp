@@ -1,7 +1,8 @@
 import {create} from 'zustand'
 import {axiosInstance} from "../utils/axios.js"
 import toast from "react-hot-toast"
-import extractTextFromHtmlResponse from '../utils/htmlParser.js'
+
+//import extractTextFromHtmlResponse from '../utils/htmlParser.js'
 
 import  {io} from "socket.io-client"
 
@@ -30,7 +31,7 @@ import  {io} from "socket.io-client"
                set({currentUser :response.data?.data})
                get().connectSocket()
          } catch (error) {
-            console.log("Error while fetching the current user via axios :: ", error)
+            //console.log("Error while fetching the current user via axios :: ", error)
             set({currentUser:null})
          } finally{
             set({isCheckingAuth:false})
@@ -46,8 +47,9 @@ import  {io} from "socket.io-client"
            
             setTimeout(() => navigate("/login"), 2000);
          } catch (error) {
-            console.log("Error while signing up user via axios :: ", error) 
-            const errorMsg = extractTextFromHtmlResponse(error.response?.data)
+          
+            //const errorMsg = extractTextFromHtmlResponse(error.response?.data)
+            const errorMsg = error.response?.data?.message || "Internal Server Error !!";
             toast.error(`Failed to register the user ⚠️ : ${errorMsg}`)
          }finally{
             set({isSigningUp:false}) ;
@@ -63,19 +65,16 @@ import  {io} from "socket.io-client"
             set({isLoggingIn:true} )
             const response = await axiosInstance.post('/user/login',data)
             set({currentUser:response.data?.data})
-            //console.log("Current User",response.data.data)
-           toast.success(` Welcome ,  ${response.data?.data.name} 🎉`)
-            /* toast("Logged In Successfully !", {
-               icon: "🔥",
-               style: { border: "1px solid red", padding: "16px" },
-             }); */
+           // console.log("Response from the axios requerst :: ",response)
+           toast.success(` Welcome ,  ${response.data?.data.name} 🤩`)
              get().connectSocket()
             navigate("/")
          } catch (error) {
             console.log("Error while loging In the user via axios :: ", error) 
         
             //toast.error(`Failed to Login the user : ${error.message}`)
-            const errorMsg = extractTextFromHtmlResponse(error.response?.data)
+           // const errorMsg = extractTextFromHtmlResponse(error.response?.data.message)
+           const errorMsg = error.response?.data?.message || "Internal Server Error !!";
             toast.error(` Login Failed  : ${errorMsg}`)
          }finally{
             set({isLoggingIn:false})
@@ -86,16 +85,21 @@ import  {io} from "socket.io-client"
       logout:async(navigate)=>{
          try {
             const response  = await axiosInstance.get('/user/logout')
+
            /*  const newActiveUsers = get().activeUsers.filter((user)=>user._id!==currentUser._id)
             set({activeUsers:newActiveUsers}) */
+            console.log('Current User :',get().currentUser)
+            toast.success(`User logged out , Goodbye ${get().currentUser.name} ☹️ `);
             set({currentUser:null})
-            toast.success("User logged out ");
+            
             get().disconnectSocket()
             setTimeout(() => navigate("/login"), 1500);
            
          } catch (error) {
             //toast.error(`Internal Server Error : ${error.message}`)
-            const errorMsg = extractTextFromHtmlResponse(error.response?.data)
+            //const errorMsg = extractTextFromHtmlResponse(error.response?.data)
+
+            const errorMsg = error.response?.data?.message || "Internal Server Error !!";
             toast.error(`Failed to Logout : ${errorMsg}`)
          }
       }
@@ -104,17 +108,19 @@ import  {io} from "socket.io-client"
          try {
             set({isProfileUpdating:true})
             const response = await axiosInstance.patch("/user/update-avatar",data)
-            console.log("Response from axios :",response.data.data.avatar)
+            //console.log("Response from axios :",response.data.data.avatar)
 
                toast.success("Avatar Updated Successfully  🎉")
-              // set({currentUser:{...currentUser,avatar:response.data.data.avatar}}) : giving some error
+             
 
                set((state) => ({
                   currentUser: { ...state.currentUser, avatar: response.data.data.avatar }
                 }));
             
          } catch (error) {
-            const errorMsg = extractTextFromHtmlResponse(error.response?.data)
+           // const errorMsg = extractTextFromHtmlResponse(error.response?.data)
+
+           const errorMsg = error.response?.data?.message || "Internal Server Error !!";
             toast.error(`Failed to Update the Avatar ⚠️ : ${errorMsg} `)
          }finally{
                set({isProfileUpdating:false})

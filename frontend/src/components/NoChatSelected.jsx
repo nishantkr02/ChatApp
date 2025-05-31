@@ -19,7 +19,7 @@ function NoChatSelected() {
         {/* Welcome Text */}
         <h2 className="text-2xl font-bold">Welcome to Gap-Shap!</h2>
         <p className="text-base-content/60">
-          Select a conversation from the sidebar to start chatting
+          Select a conversation from the sidebar to start the gap-shap 😎
         </p>
       </div>
     </div>

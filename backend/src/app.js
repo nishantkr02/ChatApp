@@ -20,27 +20,7 @@ app.use(express.static("public"))
 
 app.use(cookieParser())
 
-app.use((err,req, res,next) => {
-  console.error(err);
 
-  if (err instanceof apiError) {
-    return res.status(err.statusCode).json({
-      success: false,
-      message: err.message,
-      errors: err.errors,
-      data: err.data,
-      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
-    });
-  }
-
-  // fallback for other errors
-  res.status(500).json({
-    success: false,
-    message: 'Something went wrong',
-    errors: [],
-    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
-  });
-});
 
 
 //user Route
@@ -53,6 +33,9 @@ import messageRouter from "./routes/message.routes.js";
 app.use("/api/v1/chats",messageRouter)
 
 
+
+
+
 // ✅ Serve frontend in production
 const __dirname = path.resolve();
 
@@ -63,5 +46,28 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"))
   })
 }
+
+ app.use((err,req, res,next) => {
+  console.error(typeof(err));
+
+  if (err instanceof apiError) {
+    return res.status(err.statusCode).json({
+      success: false,
+      message: err.message,
+      errors: err.errors,
+      data:err.data,
+      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
+    });
+  }
+
+ /*  // fallback for other errors
+  res.status(500).json({
+    success: false,
+    message: 'Internal Server Error',
+   
+  }); */
+ 
+}); 
+
 
 export {app} ;

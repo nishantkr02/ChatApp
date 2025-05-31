@@ -20,7 +20,9 @@ const useChatStore = create((set,get)=>({
         set({allChats:response.data?.data})
         
     } catch (error) {
-        const errorMsg = extractTextFromHtmlResponse(error.response?.data)
+        //
+        // const errorMsg = extractTextFromHtmlResponse(error.response?.data)
+        const errorMsg = error.response?.data?.message || "Internal Server Error !! ";
         toast.error(`Failed to fetch all the chats ⚠️ : ${errorMsg}`)
             }finally{
                 set({isContactsLoading:false}) ;
@@ -35,7 +37,8 @@ const useChatStore = create((set,get)=>({
 
             set({selectedChatMessages:response.data?.data})
         } catch (error) {
-            const errorMsg = extractTextFromHtmlResponse(error.response?.data)
+            //const errorMsg = extractTextFromHtmlResponse(error.response?.data)
+            const errorMsg = error.response?.data?.message || "Internal Server Error !! ";
             toast.error(`Failed to fetch all the Messages  : ${errorMsg}`)
         }
     },
@@ -81,7 +84,9 @@ const useChatStore = create((set,get)=>({
                 set({selectedChatMessages:[...selectedChatMessages,response.data.data]})
 
             } catch (error) {
-                const errorMsg = extractTextFromHtmlResponse(error.response?.data)
+                //const errorMsg = extractTextFromHtmlResponse(error.response?.data)
+                const errorMsg = error.response?.data?.message || "Internal Server Error !! ";
+
                 toast.error(`Failed to send the message : ${errorMsg}`)
             }finally{
                 set({isMessageSending:false})
